@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/ValidatorApi/config/applicationhost.config
+/.vs/ValidatorApi/DesignTimeBuild/.dtbcache
+/.vs/ValidatorApi/v16
