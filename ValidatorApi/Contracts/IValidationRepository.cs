@@ -1,5 +1,6 @@
 ﻿using Entities.Models;
 using System;
+using System.Collections.Generic;
 
 namespace Contracts
 {
@@ -7,6 +8,7 @@ namespace Contracts
     {
         Validation CheckAccessToken(Guid token);
         Validation GetvalidationByUser(Guid userId);
-        void CreateValidation(Validation val);
+        void CreateValidation(Validation val); 
+        IEnumerable<Validation> validationByUser(Guid userId);
     }
 }

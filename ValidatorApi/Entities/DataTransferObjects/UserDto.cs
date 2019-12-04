@@ -7,6 +7,7 @@ namespace Entities.DataTransferObjects
     public class UserDto
     {
         public Guid id { get; set; }
+        public bool active { get; set; }
         public string username { get; set; }
         public string password { get; set; }
 

@@ -11,5 +11,7 @@ namespace Contracts
         User GetUserById(Guid user_Id);
         User GetUserWithDetails(string username, string password);
         void CreateUser(User user);
+        void UpdateUser(User user);
+        void DeleteUser(User user);
     }
 }

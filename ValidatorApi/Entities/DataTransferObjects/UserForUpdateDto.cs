@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Entities.DataTransferObjects
 {
-    public class UserForCreationDto
+    public class UserForUpdateDto
     {
-        [Required(ErrorMessage = "Username is required")]
-        [StringLength(60, ErrorMessage = "Username can't be longer than 60 characters")]
-        public string username { get; set; }
-
         public bool active = true;
+        public string username { get; set; }
 
         [Required(ErrorMessage = "password is required")]
         public string password { get; set; }

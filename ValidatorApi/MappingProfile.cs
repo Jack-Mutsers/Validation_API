@@ -14,6 +14,7 @@ namespace ValidatorApi
             
             CreateMap<User, UserDto>();
             CreateMap<UserForCreationDto, User>();
+            CreateMap<UserForUpdateDto, User>();
         }
     }
 }

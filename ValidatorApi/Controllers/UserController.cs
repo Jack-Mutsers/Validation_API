@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using Entities.Models;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace ValidatorValidatorApi.Controllers
 {
@@ -15,6 +16,7 @@ namespace ValidatorValidatorApi.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        private const string ApiKeyHeaderName = "ApiKey";
         private ILoggerManager _logger;
         private IRepositoryWrapper _repository;
         private IMapper _mapper;
@@ -156,6 +158,75 @@ namespace ValidatorValidatorApi.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"Something went wrong inside CreateUser action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpPut("{token}")]
+        public IActionResult UpdateUser(Guid token, [FromBody]UserForUpdateDto user)
+        {
+            try
+            {
+                if (user == null)
+                {
+                    _logger.LogError("User object sent from client is null.");
+                    return BadRequest("User object is null");
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    _logger.LogError("Invalid User object sent from client.");
+                    return BadRequest("Invalid model object");
+                }
+
+                var validationEntity = _repository.Validation.CheckAccessToken(token);
+                var id = validationEntity.user_id;
+
+                var userEntity = _repository.User.GetUserById(id);
+                if (userEntity == null)
+                {
+                    _logger.LogError($"User with id: {id}, hasn't been found in db.");
+                    return NotFound();
+                }
+
+                user.username = userEntity.username;
+
+                    _mapper.Map(user, userEntity);
+
+                    _repository.User.UpdateUser(userEntity);
+                    _repository.Save();
+                
+                return Ok("password updated");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside UpdateOwner action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteUser(Guid id)
+        {
+            try
+            {
+                var user = _repository.User.GetUserById(id);
+                if (user == null)
+                {
+                    _logger.LogError($"Owner with id: {id}, hasn't been found in db.");
+                    return NotFound();
+                }
+
+                user.active = false;
+                
+                _repository.User.DeleteUser(user);
+                _repository.Save();
+
+                return Ok("user deleted");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside DeleteOwner action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
         }

@@ -32,5 +32,10 @@ namespace Repository
         {
             Create(val);
         }
+
+        public IEnumerable<Validation> validationByUser(Guid userId)
+        {
+            return FindByCondition(a => a.user_id.Equals(userId)).ToList();
+        }
     }
 }
