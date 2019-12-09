@@ -11,6 +11,7 @@ namespace ValidatorApi
 
             CreateMap<Validation, ValidationDto>();
             CreateMap<ValidationForCreationDto, Validation>();
+            CreateMap<ValidationForUpdateDto, Validation>();
             
             CreateMap<User, UserDto>();
             CreateMap<UserForCreationDto, User>();

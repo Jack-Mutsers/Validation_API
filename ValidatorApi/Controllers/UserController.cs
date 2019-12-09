@@ -108,6 +108,50 @@ namespace ValidatorValidatorApi.Controllers
         }
 
 
+        [Route("logout")]
+        [HttpPost]
+        public IActionResult logout([FromBody]string item)
+        {
+            try
+            {
+                Guid token = Guid.Parse(item);
+                if (token.GetType() != typeof(Guid))
+                {
+                    _logger.LogError("User object sent from client is null.");
+                    return BadRequest("User object is null");
+                }
+
+                var validationEntity = _repository.Validation.CheckAccessToken(token);
+
+                if (validationEntity == null)
+                {
+                    _logger.LogError($"validation with access token: {token}, hasn't been found in db.");
+                    return NotFound();
+                }
+
+                ValidationForUpdateDto val = new ValidationForUpdateDto();
+
+                DateTime dt = DateTime.Now;
+                val.access_token = validationEntity.access_token;
+                val.user_id = validationEntity.user_id;
+                val.creation_date = validationEntity.Creation_date;
+                val.expiration_date = dt;
+
+                _mapper.Map(val, validationEntity);
+
+                _repository.Validation.updateTokenExpirationTime(validationEntity);
+                _repository.Save();
+                
+                return Ok("logged out");
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside logout action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
         [Route("login")]
         [HttpPost]
         public IActionResult login([FromBody]UserForCreationDto user)
@@ -157,7 +201,7 @@ namespace ValidatorValidatorApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Something went wrong inside CreateUser action: {ex.Message}");
+                _logger.LogError($"Something went wrong inside login action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
         }

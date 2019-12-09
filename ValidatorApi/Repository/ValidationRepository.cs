@@ -37,5 +37,10 @@ namespace Repository
         {
             return FindByCondition(a => a.user_id.Equals(userId)).ToList();
         }
+
+        public void updateTokenExpirationTime(Validation validationEntity)
+        {
+            Update(validationEntity);
+        }
     }
 }
