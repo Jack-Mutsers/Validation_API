@@ -24,7 +24,7 @@ namespace Repository
         public Validation GetvalidationByUser(Guid userId)
         {
             DateTime dt = DateTime.Now;
-            return FindByCondition(val => val.user_id.Equals(userId) && val.expiration_date > dt)
+            return FindByCondition(val => val.userId.Equals(userId) && val.expiration_date > dt)
                     .FirstOrDefault();
         }
 
@@ -35,7 +35,7 @@ namespace Repository
 
         public IEnumerable<Validation> validationByUser(Guid userId)
         {
-            return FindByCondition(a => a.user_id.Equals(userId)).ToList();
+            return FindByCondition(a => a.userId.Equals(userId)).ToList();
         }
 
         public void updateTokenExpirationTime(Validation validationEntity)

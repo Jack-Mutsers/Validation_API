@@ -107,7 +107,6 @@ namespace ValidatorValidatorApi.Controllers
             }
         }
 
-
         [Route("logout")]
         [HttpPost]
         public IActionResult logout([FromBody]string item)
@@ -133,7 +132,7 @@ namespace ValidatorValidatorApi.Controllers
 
                 DateTime dt = DateTime.Now;
                 val.access_token = validationEntity.access_token;
-                val.user_id = validationEntity.user_id;
+                val.user_id = validationEntity.userId;
                 val.creation_date = validationEntity.Creation_date;
                 val.expiration_date = dt;
 
@@ -178,14 +177,14 @@ namespace ValidatorValidatorApi.Controllers
                     return BadRequest("Invalid user credentials");
                 }
 
-                Validation valEntity = _repository.Validation.GetvalidationByUser(userEntity.id);
+                var valEntity = _repository.Validation.GetvalidationByUser(userEntity.id);
 
                 if (valEntity == null)
                 {
 
                     Validation val = new Validation();
 
-                    val.user_id = userEntity.id;
+                    val.userId = userEntity.id;
                     val.Creation_date = DateTime.Now;
                     val.expiration_date = val.Creation_date.AddMinutes(30);
 
@@ -194,10 +193,18 @@ namespace ValidatorValidatorApi.Controllers
 
                     var createdVal = _mapper.Map<ValidationDto>(val);
 
-                    return Ok(createdVal.access_token);
+                    createdVal.user = new UserForTransfer();
+                    createdVal.user.id = userEntity.id;
+                    createdVal.user.username = userEntity.username;
+
+                    return Ok(createdVal);
                 }
 
-                return Ok(valEntity.access_token);
+                valEntity.user = new UserForTransfer();
+                valEntity.user.id = userEntity.id;
+                valEntity.user.username = userEntity.username;
+
+                return Ok(valEntity);
             }
             catch (Exception ex)
             {
@@ -223,13 +230,13 @@ namespace ValidatorValidatorApi.Controllers
                     return BadRequest("Invalid model object");
                 }
 
-                var validationEntity = _repository.Validation.CheckAccessToken(token);
-                var id = validationEntity.user_id;
+                //var validationEntity = _repository.Validation.CheckAccessToken(token);
+                //var id = validationEntity.userId;
 
-                var userEntity = _repository.User.GetUserById(id);
+                var userEntity = _repository.User.GetUserById(token);
                 if (userEntity == null)
                 {
-                    _logger.LogError($"User with id: {id}, hasn't been found in db.");
+                    _logger.LogError($"User with id: {token}, hasn't been found in db.");
                     return NotFound();
                 }
 
@@ -260,6 +267,18 @@ namespace ValidatorValidatorApi.Controllers
                     _logger.LogError($"Owner with id: {id}, hasn't been found in db.");
                     return NotFound();
                 }
+
+                if (user.username == "admin")
+                {
+                    return Unauthorized();
+                }
+
+                var val = _repository.Validation.GetvalidationByUser(user.id);
+
+                DateTime dt = DateTime.Now;
+                val.expiration_date = dt;
+                
+                _repository.Validation.updateTokenExpirationTime(val);
 
                 user.active = false;
                 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,5 +12,7 @@ namespace Entities.DataTransferObjects
         public Guid user_id { get; set; }
         public DateTime creation_date { get; set; }
         public DateTime expiration_date { get; set; }
+
+        public UserForTransfer user { get; set; }
     }
 }

@@ -248,7 +248,6 @@ D:\programeren\grote_proftaat\ValidatorApi\ValidatorApi\bin\Debug\netcoreapp3.0\
 D:\programeren\grote_proftaat\ValidatorApi\ValidatorApi\bin\Debug\netcoreapp3.0\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
 D:\programeren\grote_proftaat\ValidatorApi\ValidatorApi\bin\Debug\netcoreapp3.0\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 D:\programeren\grote_proftaat\ValidatorApi\ValidatorApi\bin\Debug\netcoreapp3.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
-D:\programeren\grote_proftaat\ValidatorApi\ValidatorApi\obj\Debug\netcoreapp3.0\ValidatorApi.csprojAssemblyReference.cache
 D:\programeren\grote_proftaat\ValidatorApi\ValidatorApi\obj\Debug\netcoreapp3.0\staticwebassets\ValidatorApi.StaticWebAssets.Manifest.cache
 D:\programeren\grote_proftaat\ValidatorApi\ValidatorApi\obj\Debug\netcoreapp3.0\staticwebassets\ValidatorApi.StaticWebAssets.xml
 D:\programeren\grote_proftaat\ValidatorApi\ValidatorApi\obj\Debug\netcoreapp3.0\ValidatorApi.MvcApplicationPartsAssemblyInfo.cache
@@ -258,3 +257,4 @@ D:\programeren\grote_proftaat\ValidatorApi\ValidatorApi\obj\Debug\netcoreapp3.0\
 D:\programeren\grote_proftaat\ValidatorApi\ValidatorApi\obj\Debug\netcoreapp3.0\ValidatorApi.csproj.CopyComplete
 D:\programeren\grote_proftaat\ValidatorApi\ValidatorApi\obj\Debug\netcoreapp3.0\ValidatorApi.dll
 D:\programeren\grote_proftaat\ValidatorApi\ValidatorApi\obj\Debug\netcoreapp3.0\ValidatorApi.pdb
+D:\programeren\grote_proftaat\ValidatorApi\ValidatorApi\obj\Debug\netcoreapp3.0\ValidatorApi.csprojAssemblyReference.cache

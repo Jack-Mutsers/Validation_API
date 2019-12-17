@@ -29,7 +29,7 @@ namespace Repository
 
         public User GetUserWithDetails(string username, string password)
         {
-            return FindByCondition(user => user.username.Equals(username) && user.password.Equals(password) && user.active.Equals(true))
+            return FindByCondition(user => user.username.Equals(username) && user.password.Contains(password) && user.active.Equals(true))
                 .FirstOrDefault();
         }
 
