@@ -29,8 +29,14 @@ namespace Repository
 
         public User GetUserWithDetails(string username, string password)
         {
-            return FindByCondition(user => user.username.Equals(username) && user.password.Contains(password) && user.password.Equals(password) && user.active.Equals(true))
+            User user = FindByCondition(user => user.username.Equals(username) && user.active.Equals(true))
                 .FirstOrDefault();
+
+            password = password + "$Y.N3T~J*";
+
+            bool validPassword = BCrypt.Net.BCrypt.Verify(password, user.password);
+
+            return validPassword ? user : null;
         }
 
         public void CreateUser(User user)

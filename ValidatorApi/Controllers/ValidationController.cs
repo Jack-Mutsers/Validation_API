@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Contracts;
 using Entities.DataTransferObjects;
+using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -68,6 +69,43 @@ namespace ValidatorValidatorApi.Controllers
                     _logger.LogInfo($"Returned validation with access key: {token}");
 
                     var validationResult = _mapper.Map<ValidationDto>(val);
+                    return Ok(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside GetValidationByToken action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+        
+        [Route("extend")]
+        [HttpPut]
+        public IActionResult ExtendLoginTimer([FromBody] ValidationForUpdateDto validation)
+        {
+            try
+            {
+                Guid id = validation.access_token;
+                var validationEntity = _repository.Validation.CheckAccessToken(id);
+
+                if (validationEntity == null)
+                {
+                    _logger.LogError($"No valid token with access key: {id} has been found in the db.");
+                    return Ok(false);
+                }
+                else
+                {
+                    _logger.LogInfo($"Returned validation with access key: {id}");
+
+
+                    var validationResult = _mapper.Map<Validation>(validationEntity);
+                    DateTime dt = DateTime.Now;
+                    dt = dt.AddMinutes(30);
+
+                    validationResult.expiration_date = dt;
+                    _repository.Validation.updateTokenExpirationTime(validationResult);
+                    _repository.Save();
+
                     return Ok(true);
                 }
             }
